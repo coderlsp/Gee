@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1c731268-a635-4aed-ac24-c38c5812cf25" name="Default Changelist" comment="http.Handler Engine实现ServeHTTP,解析请求路径,然后查找路由映射表(map 实现静态路由映射)">
-      <change afterPath="$PROJECT_DIR$/.idea/Gee.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gee/gee.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+    <list default="true" id="1c731268-a635-4aed-ac24-c38c5812cf25" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/gee/context.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gee/router.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gee/gee.go" beforeDir="false" afterPath="$PROJECT_DIR$/gee/gee.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +23,7 @@
   <component name="GOROOT" url="file://C:/Program Files/Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="SIGN_OFF_COMMIT" value="true" />
   </component>
   <component name="GoLibraries">
     <option name="indexEntireGoPath" value="false" />
@@ -70,6 +69,7 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="http.Handler Engine实现ServeHTTP,解析请求路径,然后查找路由映射表(map 实现静态路由映射)" />
     <option name="LAST_COMMIT_MESSAGE" value="http.Handler Engine实现ServeHTTP,解析请求路径,然后查找路由映射表(map 实现静态路由映射)" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
