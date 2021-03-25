@@ -27,15 +27,15 @@ func TestParsePattern(t *testing.T) {
 
 func TestGetRoute(t *testing.T) {
 	r := newTestRouter()
-	n, ps := r.getRoute("GET", "/hello/geektutu")
+	n, ps := r.getRoute("GET", "/hello/hy")
 	if n == nil {
 		t.Fatal("nil shouldn't to be returned")
 	}
 	if n.pattern != "/hello/:name" {
 		t.Fatal("should match /hello/:name")
 	}
-	if ps["name"] != "geektutu" {
-		t.Fatal("name should be equal to 'geektutu'")
+	if ps["name"] != "hy" {
+		t.Fatal("name should be equal to 'hy'")
 	}
 	fmt.Printf("matched path:%s ,params['name']:%s\n", n.pattern, ps["name"])
 }
