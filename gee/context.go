@@ -3,6 +3,7 @@ package gee
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -14,8 +15,10 @@ type Context struct {
 	Writer http.ResponseWriter
 	Req    *http.Request
 	// request info
-	Path       string
-	Method     string
+	Path   string
+	Method string
+	Params map[string]string
+	// response info
 	StatusCode int
 }
 
@@ -48,7 +51,10 @@ func (ctx *Context) SetHeader(key, value string) {
 func (ctx *Context) String(code int, format string, values ...interface{}) {
 	ctx.SetHeader("Content-Type", "text/plain")
 	ctx.Status(code)
-	ctx.Writer.Write([]byte(fmt.Sprintf(format, values...)))
+	_, err := ctx.Writer.Write([]byte(fmt.Sprintf(format, values...)))
+	if err != nil {
+		log.Fatal("write string failed.")
+	}
 }
 
 func (ctx *Context) JSON(code int, obj interface{}) {
@@ -62,11 +68,22 @@ func (ctx *Context) JSON(code int, obj interface{}) {
 
 func (ctx *Context) Data(code int, data []byte) {
 	ctx.Status(code)
-	ctx.Writer.Write(data)
+	_, err := ctx.Writer.Write(data)
+	if err != nil {
+		log.Fatal("write data failed.")
+	}
 }
 
 func (ctx *Context) HTML(code int, html string) {
 	ctx.SetHeader("Content-Type", "text/html")
 	ctx.Status(code)
-	ctx.Writer.Write([]byte(html))
+	_, err := ctx.Writer.Write([]byte(html))
+	if err != nil {
+		log.Fatal("write HTML failed.")
+	}
+}
+
+func (ctx *Context) Param(key string) string {
+	value, _ := ctx.Params[key]
+	return value
 }
