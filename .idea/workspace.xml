@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1c731268-a635-4aed-ac24-c38c5812cf25" name="Default Changelist" comment="" />
+    <list default="true" id="1c731268-a635-4aed-ac24-c38c5812cf25" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gee/gee.go" beforeDir="false" afterPath="$PROJECT_DIR$/gee/gee.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gee/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/gee/router.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -84,24 +89,23 @@
       <pattern value="^\QTestGetRoute\E$" />
       <method v="2" />
     </configuration>
-    <configuration name="TestParsePattern in Gee/gee" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+    <configuration name="router_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="Gee" />
       <working_directory value="$PROJECT_DIR$/gee" />
       <framework value="gotest" />
-      <kind value="PACKAGE" />
-      <package value="Gee/gee" />
+      <kind value="FILE" />
+      <package value="Gee" />
       <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <pattern value="^\QTestParsePattern\E$" />
+      <filePath value="$PROJECT_DIR$/gee/router_test.go" />
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Go Build.go build Gee" />
+        <item itemvalue="Go Test.router_test.go" />
         <item itemvalue="Go Build.go build main.go (1)" />
         <item itemvalue="Go Test.TestGetRoute in Gee/gee" />
         <item itemvalue="Go Build.go build trie.go" />
-        <item itemvalue="Go Test.TestParsePattern in Gee/gee" />
       </list>
     </recent_temporary>
   </component>

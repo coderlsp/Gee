@@ -8,37 +8,32 @@ import (
 
 func main() {
 	engine := gee.New()
-	engine.GET("/", func(ctx *gee.Context) {
-		ctx.HTML(http.StatusOK, "<h1>Hello Gee</h1>")
+	engine.GET("/index", func(ctx *gee.Context) {
+		ctx.HTML(http.StatusOK, "<h1>Index Page</h1>")
 	})
-
-	engine.GET("/assets/*filepath", func(ctx *gee.Context) {
-		ctx.JSON(http.StatusOK, gee.H{
-			"filepath": ctx.Param("filepath"),
+	v1 := engine.Group("/v1")
+	{
+		v1.GET("/", func(ctx *gee.Context) {
+			ctx.HTML(http.StatusOK, "<h1>Hello Gee</h1>")
 		})
-	})
-
-	engine.GET("/hello/:name/b", func(ctx *gee.Context) {
-		ctx.JSON(http.StatusOK, gee.H{
-			"name":  ctx.Param("name"),
-			"place": "b",
+		v1.GET("/hello", func(ctx *gee.Context) {
+			// expect /hello?name=hy
+			ctx.String(http.StatusOK, "hello %s, you're at %s\n", ctx.Query("name"), ctx.Path)
 		})
-	})
-	engine.GET("/hello/:name/c", func(ctx *gee.Context) {
-		ctx.JSON(http.StatusOK, gee.H{
-			"name":  ctx.Param("name"),
-			"place": "c",
+	}
+	v2 := engine.Group("/v2")
+	{
+		v2.GET("/hello/:name", func(ctx *gee.Context) {
+			// expect /hello/hy
+			ctx.String(http.StatusOK, "hello %s, you're at %s\n", ctx.Param("name"), ctx.Path)
 		})
-	})
-	engine.GET("/hello/:you/b", func(ctx *gee.Context) {
-		ctx.JSON(http.StatusOK, gee.H{
-			"you": ctx.Param("you"),
+		v2.POST("/login", func(ctx *gee.Context) {
+			ctx.JSON(http.StatusOK, gee.H{
+				"username": ctx.PostForm("username"),
+				"password": ctx.PostForm("password"),
+			})
 		})
-	})
-	engine.GET("/hello", func(ctx *gee.Context) {
-		// expect /hello?name=hy
-		ctx.String(http.StatusOK, "hello %s, you're at %s\n", ctx.Param("name"), ctx.Path)
-	})
+	}
 	err := engine.Run(":8080")
 	if err != nil {
 		log.Fatal("Gee run failed.")

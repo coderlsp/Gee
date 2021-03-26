@@ -1,7 +1,6 @@
 package gee
 
 import (
-	"log"
 	"net/http"
 	"strings"
 )
@@ -36,9 +35,9 @@ func parsePattern(pattern string) (parts []string) {
 }
 
 func (r *router) addRoute(method, pattern string, handler HandlerFunc) {
-	assert(method != "", "HTTP method can not be empty.")
-	assert(pattern[0] == '/', "pattern must begin with '/'.")
-	assert(handler != nil, "handler can not be nil")
+	//assert(method != "", "HTTP method can not be empty.")
+	//assert(pattern[0] == '/', "pattern must begin with '/'.")
+	//assert(handler != nil, "handler can not be nil")
 
 	parts := parsePattern(pattern)
 	_, ok := r.roots[method]
@@ -48,7 +47,6 @@ func (r *router) addRoute(method, pattern string, handler HandlerFunc) {
 	r.roots[method].addRoute(pattern, parts, 0)
 	key := method + "-" + pattern
 	r.handlers[key] = handler
-	log.Printf("Router %4s - %4s\n", method, pattern)
 }
 
 // Obtain node and params according to request method and request path.
