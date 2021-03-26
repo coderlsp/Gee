@@ -6,8 +6,8 @@ import (
 	"testing"
 )
 
-func newTestRouter() *router {
-	r := newRouter()
+func newTestRouter() *route {
+	r := newRoute()
 	r.addRoute("GET", "/", nil)
 	r.addRoute("GET", "/hello/:name", nil)
 	r.addRoute("GET", "/hello/b/c", nil)

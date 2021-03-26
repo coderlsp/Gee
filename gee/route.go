@@ -7,14 +7,14 @@ import (
 
 // roots key. Example: roots['GET'] roots['POST']
 // handlers key. Example: handlers['GET-/p/:lang/doc'], handlers['POST-/p/book']
-type router struct {
+type route struct {
 	roots    map[string]*node       //
-	handlers map[string]HandlerFunc // router mapping to handler
+	handlers map[string]HandlerFunc // route mapping to handler
 }
 
-// Create a router object.
-func newRouter() *router {
-	return &router{
+// newRoute is the constructor of gee.route
+func newRoute() *route {
+	return &route{
 		roots:    make(map[string]*node),
 		handlers: make(map[string]HandlerFunc),
 	}
@@ -34,7 +34,7 @@ func parsePattern(pattern string) (parts []string) {
 	return parts
 }
 
-func (r *router) addRoute(method, pattern string, handler HandlerFunc) {
+func (r *route) addRoute(method, pattern string, handler HandlerFunc) {
 	//assert(method != "", "HTTP method can not be empty.")
 	//assert(pattern[0] == '/', "pattern must begin with '/'.")
 	//assert(handler != nil, "handler can not be nil")
@@ -50,7 +50,7 @@ func (r *router) addRoute(method, pattern string, handler HandlerFunc) {
 }
 
 // Obtain node and params according to request method and request path.
-func (r *router) getRoute(method, path string) (n *node, params map[string]string) {
+func (r *route) getRoute(method, path string) (n *node, params map[string]string) {
 	params = make(map[string]string)
 	searchParts := parsePattern(path)
 	root, ok := r.roots[method]
@@ -75,13 +75,16 @@ func (r *router) getRoute(method, path string) (n *node, params map[string]strin
 }
 
 // Handle request based on Context.
-func (r *router) handle(ctx *Context) {
+func (r *route) handle(ctx *Context) {
 	n, params := r.getRoute(ctx.Method, ctx.Path)
 	if n != nil {
 		ctx.Params = params
 		key := ctx.Method + "-" + n.pattern
-		r.handlers[key](ctx)
+		ctx.handlers = append(ctx.handlers, r.handlers[key])
 	} else {
-		ctx.String(http.StatusNotFound, "404 Not Found:%s\n", ctx.Path)
+		ctx.handlers = append(ctx.handlers, func(ctx *Context) {
+			ctx.String(http.StatusNotFound, "404 Not Found:%s\n", ctx.Path)
+		})
 	}
+	ctx.Next()
 }

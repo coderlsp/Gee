@@ -20,14 +20,30 @@ type Context struct {
 	Params map[string]string
 	// response info
 	StatusCode int
+	// middleware
+	handlers []HandlerFunc
+	index    int // Record the current execution to which middleware
 }
 
+// newContext is the constructor of gee.Context
 func newContext(w http.ResponseWriter, req *http.Request) *Context {
 	return &Context{
 		Writer: w,
 		Req:    req,
 		Path:   req.URL.Path,
 		Method: req.Method,
+		index:  -1,
+	}
+}
+
+// Next function transfers control to the next middleware
+func (ctx *Context) Next() {
+	ctx.index++
+	s := len(ctx.handlers)
+	// 这里如果使用if语句,则要求每个中间件都要调用Next()方法
+	// 但若使用for,则一些不需要递归的中间件就可以不使用Next()方法
+	for ; ctx.index < s; ctx.index++ {
+		ctx.handlers[ctx.index](ctx)
 	}
 }
 
@@ -86,4 +102,9 @@ func (ctx *Context) HTML(code int, html string) {
 func (ctx *Context) Param(key string) string {
 	value, _ := ctx.Params[key]
 	return value
+}
+
+func (ctx *Context) Fail(code int, err string) {
+	ctx.index = len(ctx.handlers)
+	ctx.JSON(code, H{"message": err})
 }

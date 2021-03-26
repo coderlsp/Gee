@@ -3,6 +3,7 @@ package gee
 import (
 	"log"
 	"net/http"
+	"strings"
 )
 
 // HandlerFunc defines the request handler used by gee
@@ -15,7 +16,7 @@ type HandlerFunc func(ctx *Context)
 // so We can add routes through Engine or RouteGroup to add routes
 type Engine struct {
 	*RouteGroup
-	router *router       // static router
+	route  *route        // static route
 	groups []*RouteGroup // store all groups
 }
 
@@ -26,14 +27,26 @@ type RouteGroup struct {
 	engine      *Engine       // all groups share a Engine instance
 }
 
+// Use is defined to add middleware to the group
+func (group *RouteGroup) Use(middlewares ...HandlerFunc) {
+	group.middlewares = append(group.middlewares, middlewares...)
+}
+
 func (engine *Engine) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	var middlewares []HandlerFunc
+	for _, group := range engine.groups {
+		if strings.HasPrefix(req.URL.Path, group.prefix) {
+			middlewares = append(middlewares, group.middlewares...)
+		}
+	}
 	ctx := newContext(w, req)
-	engine.router.handle(ctx)
+	ctx.handlers = middlewares
+	engine.route.handle(ctx)
 }
 
 // New is the constructor of gee.Engine
 func New() *Engine {
-	engine := &Engine{router: newRouter()}
+	engine := &Engine{route: newRoute()}
 	engine.RouteGroup = &RouteGroup{engine: engine}
 	engine.groups = []*RouteGroup{engine.RouteGroup}
 	return engine
@@ -52,20 +65,20 @@ func (group *RouteGroup) Group(prefix string) *RouteGroup {
 	return newGroup
 }
 
-func (group *RouteGroup) addRouter(method, comp string, handler HandlerFunc) {
+func (group *RouteGroup) addRoute(method, comp string, handler HandlerFunc) {
 	pattern := group.prefix + comp
-	log.Printf("Router %4s - %4s\n", method, pattern)
-	group.engine.router.addRoute(method, pattern, handler)
+	log.Printf("route %4s - %4s\n", method, pattern)
+	group.engine.route.addRoute(method, pattern, handler)
 }
 
 // GET defines the method to add GET request
 func (group *RouteGroup) GET(pattern string, handler HandlerFunc) {
-	group.addRouter("GET", pattern, handler)
+	group.addRoute("GET", pattern, handler)
 }
 
 // POST defines the method to add POST request
 func (group *RouteGroup) POST(pattern string, handler HandlerFunc) {
-	group.addRouter("POST", pattern, handler)
+	group.addRoute("POST", pattern, handler)
 }
 
 // Run defines the method to start a http server
